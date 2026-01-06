@@ -1,6 +1,6 @@
 # `pg_sequencer` Gem
 
-[![CI](https://github.com/aifinyo-ag/pg_sequencer/actions/workflows/ci.yml/badge.svg)](https://github.com/aifinyo-ag/pg_sequencer/actions/workflows/ci.yml)
+[![CI](https://github.com/aifinyo-ag/pg_sequencer/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/aifinyo-ag/pg_sequencer/actions/workflows/ci.yml)
 
 The `pg_sequencer` gem adds methods to your migrations to allow you to create, drop and change sequence objects in PostgreSQL. It also dumps sequences to `schema.rb` by extending `ActiveRecord::SchemaDumper`. Currently supports PostgreSQL 15-17 and is actively tested against Ruby 3.2-3.4 and Rails 8.0-8.1.
 
