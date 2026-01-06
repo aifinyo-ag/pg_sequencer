@@ -24,7 +24,7 @@ module PgSequencer
         statement_parts <<  ("start: "     + sequence.options[:start].inspect)
         statement_parts <<  ("cache: "     + sequence.options[:cache].inspect)
         statement_parts <<  ("cycle: "     + sequence.options[:cycle].inspect)
-        # statement_parts << ("owned_by: " + sequence.options[:owned_by].inspect) # FIXME: figure out why sometimes nil?
+        statement_parts <<  ("owned_by: "  + sequence.options[:owned_by].inspect) if sequence.options[:owned_by]
         "  " + statement_parts.join(", ")
       end
 

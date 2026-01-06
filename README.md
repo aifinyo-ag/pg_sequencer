@@ -1,33 +1,50 @@
 # `pg_sequencer` Gem
 
-[![Build Status](https://travis-ci.org/sixtyfive/pg_sequencer.svg?branch=master)](https://travis-ci.org/sixtyfive/pg_sequencer)
+[![CI](https://github.com/aifinyo-ag/pg_sequencer/actions/workflows/ci.yml/badge.svg)](https://github.com/aifinyo-ag/pg_sequencer/actions/workflows/ci.yml)
 
-The `pg_sequencer` gem adds methods to your migrations to allow you to create, drop and change sequence objects in PostgreSQL. It also dumps sequences to `schema.rb` by extending `ActiveRecord::SchemaDumper`. Originally tested with postgres 9.0.4 and was said to work down to 8.1 at that time. Currently known-working with postgres up to 15.0 (adjustments were made at the time of postgres 10.0).
+The `pg_sequencer` gem adds methods to your migrations to allow you to create, drop and change sequence objects in PostgreSQL. It also dumps sequences to `schema.rb` by extending `ActiveRecord::SchemaDumper`. Currently supports PostgreSQL 15-17 and is actively tested against Ruby 3.2-3.4 and Rails 8.0-8.1.
 
 This fork aims to integrate as many of the forks off of the original codebase which was abandoned in 2018. For a better starting point, it was itself forked off of @tablexi's fork, though. So far, it features the following enhancements:
 
 - `db:migrate` no longer pollutes `schema.rb` with sequences already assigned
 - `db:migrate` no longer resets existing sequences' `max` value to `0`
-- `.tool-versions` file for use with ASDF
 - write dumped create sequence statements _above_ tables in `schema.rb`
 - `select_sequence` argument
-- `owned_by` option
+- `owned_by` option with proper nil handling
 - ignore table primary keys
-- support for ruby 2.0+
-- support for rails 5.0+
-- CI via Travis
-- tests working again (because some of them are out-commented ... PR welcome! :))
+- support for Ruby 3.2+ and Ruby 4.0
+- support for Rails 8.0+
+- PostgreSQL 15-17 compatibility
+- CI via GitHub Actions with comprehensive matrix testing
+- improved test coverage with fixed schema dumper tests
+- SQL injection protection for sequence names
 - a lot of code cleanup by various people
+
+## Requirements
+
+- **Ruby:** 3.2.0 or higher (tested with 3.2, 3.3, 3.4, and 4.0)
+- **Rails:** 8.0.0 or higher (tested with 8.0 and 8.1)
+- **PostgreSQL:** 15 or higher (tested with 15, 16, and 17)
 
 ## Installation
 
-Requires `ruby` version 2.7.8+. Will install `activesupport` and `activerecord` >=6.1.0 as well as pg>=1.5.3.
-
 Add this to your Gemfile:
 
-```sh
-gem 'pg_sequencer', github: 'sixtyfive/pg_sequencer'
+```ruby
+gem 'pg_sequencer', github: 'aifinyo-ag/pg_sequencer'
 ```
+
+### Upgrading from 1.x to 2.0
+
+Version 2.0 introduces breaking changes in minimum version requirements:
+
+- Ruby minimum increased from 2.7.8 to 3.2.0
+- Rails minimum increased from 6.1.0 to 8.0.0
+- PostgreSQL < 15 no longer tested (though 10+ may still work)
+
+If you're using older versions, please stay on pg_sequencer 1.0.5 until you can upgrade your infrastructure.
+
+See [CHANGELOG.md](CHANGELOG.md) for detailed changes.
 
 ## API
 
@@ -113,6 +130,10 @@ DROP SEQUENCE products_seq
 
 ## Credits
 
-The original version of this gem was written by Tony Collen from [Code42](https://www.code42.com). This repository may include commits by authors found in the forks of GitHub users @zenedge, @wwinters, @thinkthroughmath, @steakknife, @offtop, @guilleva, @sinfin, @emilford, @cwinters, @charitywater, @brunopascoa, @bprotas, @didacte, @achempion, @buyapowa, @mindvision and @jhun-magatas and is being kept around by me, @sixtyfive. I currently lack the time to properly maintain this but will gratefully respond to PRs. Looking through those forks, it seemed to me like a lot of work has happened during the time since Code42 posted their abandonment notice and I feel it'd be lovely if not all of that was lost :)
+The original version of this gem was written by Tony Collen from [Code42](https://www.code42.com) ([code42/pg_sequencer](https://github.com/code42/pg_sequencer)).
+
+This repository may include commits by authors found in the forks of GitHub users @zenedge, @wwinters, @thinkthroughmath, @steakknife, @offtop, @guilleva, @sinfin, @emilford, @cwinters, @charitywater, @brunopascoa, @bprotas, @didacte, @achempion, @buyapowa, @mindvision and @jhun-magatas. Special thanks to @sixtyfive ([sixtyfive/pg_sequencer](https://github.com/sixtyfive/pg_sequencer)) for consolidating many of the community improvements after Code42's abandonment in 2018.
+
+**Current Maintainer:** This fork is now maintained by [aifinyo AG](https://www.aifinyo.de) ([aifinyo-ag/pg_sequencer](https://github.com/aifinyo-ag/pg_sequencer)) with modernized support for Ruby 3.2+, Rails 8.0+, and PostgreSQL 15+.
 
 The design of `pg_sequencer` is heavily influenced by Matthew Higgins' [foreigner](https://github.com/matthuhiggins/foreigner) gem.

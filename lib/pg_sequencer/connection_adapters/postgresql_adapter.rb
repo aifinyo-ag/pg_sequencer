@@ -140,11 +140,7 @@ module PgSequencer
       # is_cycled     | f
       # is_called     | t
       def select_sequence(sequence_name)
-        if postgresql_version > 100_000
-          select_one("SELECT * FROM pg_sequence WHERE seqrelid='#{sequence_name}'::regclass")
-        else
-          select_one("SELECT increment_by AS seqincrement, min_value AS seqmin, max_value AS seqmax, start_value AS seqstart, cache_value AS seqcache, is_cycled AS seqcycle FROM #{sequence_name}")
-        end
+        select_one("SELECT * FROM pg_sequence WHERE seqrelid=#{quote(sequence_name)}::regclass")
       end
 
       # Values for owners of a sequence:
@@ -162,7 +158,7 @@ module PgSequencer
               JOIN pg_namespace n ON n.oid = t.relnamespace
               JOIN pg_attribute a ON a.attrelid = t.oid AND a.attnum = d.refobjsubid
               WHERE s.relkind = 'S' AND d.deptype = 'a'
-              AND s.relname = '#{sequence_name}'
+              AND s.relname = #{quote(sequence_name)}
               SQL
 
         select_all(sql).map do |row|

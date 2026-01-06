@@ -24,15 +24,19 @@ describe PgSequencer::SchemaDumper do
     end
 
     it "outputs all sequences correctly" do
-      expected_output = <<~SCHEMA
-                        # Fake Schema Header
-                          create_sequence "item_seq", increment: 1, min: 1, max: 2000000, start: 1, cache: 5, cycle: true, owned_by: "table_name.column_name"
-                          create_sequence "user_seq", increment: 1, min: 1, max: 2000000, start: 1, cache: 5, cycle: true, owned_by: "table_name.column_name"
-                        # (No Tables)
-                        # Fake Schema Trailer
-                        SCHEMA
       MockSchemaDumper.dump(connection, stream)
-      # expect(expected_output.strip).to eq(stream.to_s) # FIXME: make test work again
+      output = stream.to_s
+
+      expect(output).to include("create_sequence")
+      expect(output).to include("item_seq")
+      expect(output).to include("user_seq")
+      expect(output).to include("increment: 1")
+      expect(output).to include("min: 1")
+      expect(output).to include("max: 2000000")
+      expect(output).to include("start: 1")
+      expect(output).to include("cache: 5")
+      expect(output).to include("cycle: true")
+      expect(output).to include('owned_by: "table_name.column_name"')
     end
   end
 
@@ -50,15 +54,19 @@ describe PgSequencer::SchemaDumper do
     end
 
     it "outputs false for schema output" do
-      expected_output = <<~SCHEMA
-                        # Fake Schema Header
-                          create_sequence "item_seq", increment: 1, min: false, max: 2000000, start: 1, cache: 5, cycle: true, owned_by: "table_name.column_name"
-                          create_sequence "user_seq", increment: 1, min: false, max: 2000000, start: 1, cache: 5, cycle: true, owned_by: "table_name.column_name"
-                        # (No Tables)
-                        # Fake Schema Trailer
-                        SCHEMA
       MockSchemaDumper.dump(connection, stream)
-      # expect(expected_output.strip).to eq(stream.to_s) # FIXME: make test work again
+      output = stream.to_s
+
+      expect(output).to include("create_sequence")
+      expect(output).to include("item_seq")
+      expect(output).to include("user_seq")
+      expect(output).to include("increment: 1")
+      expect(output).to include("min: false")
+      expect(output).to include("max: 2000000")
+      expect(output).to include("start: 1")
+      expect(output).to include("cache: 5")
+      expect(output).to include("cycle: true")
+      expect(output).to include('owned_by: "table_name.column_name"')
     end
   end
 end
