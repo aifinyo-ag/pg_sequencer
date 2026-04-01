@@ -78,16 +78,16 @@ module PgSequencer
       end
 
       def sequence_options_sql(options = {})
-        sql = ""
-        sql << increment_option_sql(options) if options[:increment] or options[:increment_by]
-        sql << min_option_sql(options)
-        sql << max_option_sql(options)
-        sql << start_option_sql(options) if options[:start]    or options[:start_with]
-        sql << restart_option_sql(options) if options[:restart]  or options[:restart_with]
-        sql << cache_option_sql(options) if options[:cache]
-        sql << cycle_option_sql(options)
-        sql << owned_option_sql(options) if options[:owned_by]
-        sql
+        parts = []
+        parts << increment_option_sql(options) if options[:increment] or options[:increment_by]
+        parts << min_option_sql(options)
+        parts << max_option_sql(options)
+        parts << start_option_sql(options) if options[:start]    or options[:start_with]
+        parts << restart_option_sql(options) if options[:restart]  or options[:restart_with]
+        parts << cache_option_sql(options) if options[:cache]
+        parts << cycle_option_sql(options)
+        parts << owned_option_sql(options) if options[:owned_by]
+        parts.join
       end
 
       def sequences
